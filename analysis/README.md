@@ -87,3 +87,32 @@ shape mattered far less than individual picks.
 - **Survivorship in the price bands.** The 900-minute filter removes players who lost
   their place, which flatters every band — especially the cheap ones, where the
   rotation risk actually lives.
+
+# DefCon Environment Projection
+
+`defcon_environment.py` projects each club's Defensive Contribution environment for the
+coming season, separately for defenders (10+ CBIT) and midfielders (12+ CBIRT).
+
+```bash
+python analysis/defcon_environment.py
+```
+
+Method: measure each club's 2025-26 DefCon rate, regress it on team strength (xG
+difference) to split *team quality* from *playing style*, then re-attribute the style
+residual across the 2026-27 manager changes. A departing manager is assumed to take half
+their club's style residual with them; the squad keeps the other half.
+
+Findings from 2025-26:
+
+- Team strength explains only 16-21% of DefCon variance — **style dominates quality**.
+- DEF and MID DefCon correlate at just r = +0.34. They are different phenomena and are
+  modelled separately (Fulham ranked 4th for defenders and last for midfielders).
+- Largest positive style residuals: Bournemouth (Iraola) and Crystal Palace (Glasner).
+  Largest negative: Aston Villa.
+
+Caveats: the DefCon rule began in 2025-26, so there is exactly **one season** of ground
+truth and no way to validate a manager signature across seasons or separate it from
+squad personnel. Managers arriving from outside the Premier League have no measurable
+signature at all and fall back on an explicit, mild style prior — clearly labelled
+low-confidence in the output. Squad-continuity assumptions for clubs that kept their
+manager are unverified.
